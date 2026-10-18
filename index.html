@@ -1,0 +1,234 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#f4f6f8" />
+    <title>Lifetime Guarantee Registration</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+  </head>
+  <body data-stage="landing" data-theme="warranty">
+    <div class="app" id="app">
+      <!-- Stage 1a: Warranty landing -->
+      <section class="stage stage-landing" id="stage-landing" aria-live="polite">
+        <div class="card warranty-card">
+          <div class="seal" aria-hidden="true">
+            <svg viewBox="0 0 100 100" width="72" height="72">
+              <circle cx="50" cy="50" r="46" fill="none" stroke="#c9a227" stroke-width="3" />
+              <circle cx="50" cy="50" r="38" fill="#1e293b" />
+              <text
+                x="50"
+                y="46"
+                text-anchor="middle"
+                fill="#c9a227"
+                font-size="11"
+                font-family="DM Sans, sans-serif"
+                font-weight="700"
+              >
+                LIFETIME
+              </text>
+              <text
+                x="50"
+                y="60"
+                text-anchor="middle"
+                fill="#e2e8f0"
+                font-size="9"
+                font-family="DM Sans, sans-serif"
+              >
+                GUARANTEE
+              </text>
+            </svg>
+          </div>
+          <p class="eyebrow">Official Product Registration</p>
+          <h1>Lifetime Guarantee Registration</h1>
+          <p class="lede">
+            Register your product to activate its lifetime guarantee.
+          </p>
+          <button type="button" class="btn btn-primary" id="btn-register">
+            Register here
+          </button>
+          <p class="fine-print">
+            Serial format verified · Coverage pending activation
+          </p>
+        </div>
+      </section>
+
+      <!-- Stage 1b: Proposal -->
+      <section class="stage stage-proposal" id="stage-proposal" hidden>
+        <div class="card warranty-card proposal-card">
+          <p class="eyebrow">Activation sequence interrupted</p>
+          <h1 class="proposal-title">Will you marry me?</h1>
+          <p class="lede proposal-sub">
+            This is the only registration that matters.
+          </p>
+          <div class="proposal-actions" id="proposal-actions">
+            <button type="button" class="btn btn-yes" id="btn-yes">
+              YES 💍
+            </button>
+            <button type="button" class="btn btn-no" id="btn-no">NO 🙃</button>
+          </div>
+          <p class="no-caught" id="no-caught" hidden>I'll wait right here.</p>
+        </div>
+        <div class="toast" id="toast" role="status" aria-live="polite" hidden></div>
+      </section>
+
+      <!-- Stage 2: Success -->
+      <section class="stage stage-success" id="stage-success" hidden>
+        <div class="card romance-card">
+          <div class="hearts" aria-hidden="true">♡</div>
+          <p class="eyebrow romantic">Registration confirmed</p>
+          <h1>You have successfully completed the Lifetime Guarantee Registration.</h1>
+          <div class="reg-id">
+            <span>Registration ID</span>
+            <strong>#BBforever</strong>
+          </div>
+          <p class="lede">
+            Your lifetime guarantee covers love, partnership, adventures, and
+            choosing each other every day.
+          </p>
+          <button type="button" class="btn btn-romance" id="btn-to-unlock">
+            Continue
+          </button>
+        </div>
+      </section>
+
+      <!-- Stage 3a: Unlock intro -->
+      <section class="stage stage-unlock" id="stage-unlock" hidden>
+        <div class="card romance-card">
+          <p class="eyebrow romantic">Final activation</p>
+          <h1>Unlock your lifetime promise</h1>
+          <p class="lede">
+            Your registration is confirmed. But your guarantee comes with one
+            final activation requirement.
+          </p>
+          <p class="lede">
+            To open the box, you must first win the Lifetime Promise Challenge.
+            Your key awaits the winner.
+          </p>
+          <button type="button" class="btn btn-romance" id="btn-start-quiz">
+            Start the Lifetime Promise Challenge 🔐
+          </button>
+        </div>
+      </section>
+
+      <!-- Stage 3b: Quiz -->
+      <section class="stage stage-quiz" id="stage-quiz" hidden>
+        <div class="quiz-shell">
+          <header class="quiz-header">
+            <h1>The #BBforever Lifetime Promise Challenge</h1>
+          </header>
+
+          <div class="quiz-banner" id="quiz-banner" aria-hidden="true">
+            <div class="banner-art" data-theme="home" id="banner-art"></div>
+          </div>
+
+          <div class="quiz-nav">
+            <button
+              type="button"
+              class="icon-btn"
+              id="btn-prev"
+              aria-label="Previous question"
+              disabled
+            >
+              ‹
+            </button>
+            <span class="progress" id="quiz-progress">1 of 10</span>
+            <button
+              type="button"
+              class="icon-btn"
+              id="btn-next-nav"
+              aria-label="Next question"
+              disabled
+            >
+              ›
+            </button>
+            <div class="quiz-tools">
+              <button
+                type="button"
+                class="icon-btn"
+                id="btn-hint"
+                aria-label="Show hint"
+                title="Hint"
+              >
+                💡
+              </button>
+            </div>
+          </div>
+
+          <p class="hint-box" id="hint-box" hidden></p>
+          <p class="quiz-prompt" id="quiz-prompt"></p>
+          <div class="options" id="quiz-options" role="listbox"></div>
+          <p class="option-nudge" id="option-nudge" hidden>
+            Choose the correct option to continue.
+          </p>
+
+          <button type="button" class="btn btn-next" id="btn-next" disabled>
+            Next
+          </button>
+        </div>
+      </section>
+
+      <!-- Scorecard -->
+      <section class="stage stage-score" id="stage-score" hidden>
+        <div class="card romance-card score-card">
+          <p class="eyebrow romantic">Challenge result</p>
+          <h1 class="score-heading">Your score</h1>
+          <p class="score-value" id="score-value">0 / 10</p>
+          <p class="lede score-message" id="score-message"></p>
+          <button
+            type="button"
+            class="btn btn-romance"
+            id="btn-reveal-key"
+            hidden
+          >
+            Reveal the Key
+          </button>
+          <button type="button" class="btn btn-romance" id="btn-retry-quiz" hidden>
+            Try the missed ones again
+          </button>
+        </div>
+      </section>
+
+      <!-- Final: Complete -->
+      <section class="stage stage-complete" id="stage-complete" hidden>
+        <div class="card romance-card prize-card">
+          <div class="key-icon" aria-hidden="true">🔐</div>
+          <h1>
+            Congratulations. You have completed the Lifetime Promise Challenge.
+          </h1>
+          <div class="reg-id">
+            <span>Your registration ID is</span>
+            <strong>#BBforever</strong>
+          </div>
+          <p class="lede">
+            Your guarantee does not promise a perfect life. It promises two
+            independent people willing to grow, repair, and keep choosing each
+            other.
+          </p>
+          <div class="key-location">
+            <p class="key-label">Here's the location of the key:</p>
+            <p class="key-reveal">
+              Locate the key at the bottom of the box at the third tile. Go
+              ahead open the Box
+            </p>
+          </div>
+        </div>
+      </section>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/quiz-data.js"></script>
+    <script src="js/covers.js"></script>
+    <script src="js/responses.js"></script>
+    <script src="js/app.js"></script>
+  </body>
+</html>

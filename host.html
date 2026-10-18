@@ -1,0 +1,350 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <title>Host — Response viewer</title>
+    <link rel="stylesheet" href="css/styles.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@600&family=DM+Sans:wght@400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      body {
+        background: linear-gradient(165deg, #faf4ef 0%, #f3e4e8 50%, #efe8f5 100%);
+      }
+      .host-wrap {
+        width: 100%;
+        max-width: 560px;
+        margin: 0 auto;
+        padding: 24px 16px 48px;
+      }
+      .host-card {
+        background: #fff8f3;
+        border: 1px solid rgba(183, 110, 121, 0.28);
+        border-radius: 18px;
+        padding: 28px 20px;
+        box-shadow: 0 18px 50px rgba(142, 74, 85, 0.12);
+      }
+      .host-card h1 {
+        font-family: "Cormorant Garamond", Georgia, serif;
+        font-size: 1.75rem;
+        margin: 0 0 8px;
+        color: #3f2a2e;
+      }
+      .host-card .lede {
+        color: #6b5559;
+        margin-bottom: 20px;
+      }
+      .setup {
+        text-align: left;
+        background: rgba(183, 110, 121, 0.08);
+        border-radius: 12px;
+        padding: 14px 14px;
+        font-size: 0.9rem;
+        line-height: 1.5;
+        color: #3f2a2e;
+        margin-bottom: 20px;
+      }
+      .setup ol {
+        margin: 8px 0 0;
+        padding-left: 1.2rem;
+      }
+      .setup code {
+        font-size: 0.85em;
+        background: rgba(0, 0, 0, 0.06);
+        padding: 1px 5px;
+        border-radius: 4px;
+      }
+      .pin-row {
+        display: flex;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .pin-row input {
+        flex: 1;
+        border: 1px solid #e2c9ce;
+        border-radius: 12px;
+        padding: 12px 14px;
+        font-family: inherit;
+        font-size: 1rem;
+      }
+      .status-pill {
+        display: inline-block;
+        font-size: 0.75rem;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        padding: 4px 10px;
+        border-radius: 999px;
+        margin-bottom: 12px;
+      }
+      .status-pill.ok {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .status-pill.warn {
+        background: #fef3c7;
+        color: #92400e;
+      }
+      .submission {
+        text-align: left;
+        border: 1px solid #ead7db;
+        border-radius: 14px;
+        padding: 14px;
+        margin-bottom: 12px;
+        background: #fff;
+      }
+      .submission h2 {
+        font-size: 1rem;
+        margin: 0 0 6px;
+        color: #3f2a2e;
+      }
+      .submission .meta {
+        font-size: 0.8rem;
+        color: #8e6b72;
+        margin-bottom: 10px;
+      }
+      .submission details {
+        font-size: 0.88rem;
+        color: #4a3a3e;
+      }
+      .submission summary {
+        cursor: pointer;
+        font-weight: 600;
+        margin-bottom: 6px;
+      }
+      .answer-line {
+        margin: 0 0 8px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid #f1e4e7;
+      }
+      .answer-line:last-child {
+        border-bottom: none;
+      }
+      .ok-mark {
+        color: #16a34a;
+      }
+      .bad-mark {
+        color: #dc2626;
+      }
+      .empty {
+        color: #8e6b72;
+        font-size: 0.95rem;
+      }
+      .toolbar {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .btn-ghost {
+        background: #fff;
+        color: #8e4a55;
+        border: 1px solid #e2c9ce;
+      }
+      #viewer[hidden],
+      #gate[hidden] {
+        display: none !important;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="host-wrap">
+      <div class="host-card">
+        <p class="eyebrow romantic">Host only</p>
+        <h1>Response viewer</h1>
+        <p class="lede">
+          Email alerts go to the address tied to your Web3Forms key. This page
+          shows copies saved on this device.
+        </p>
+
+        <div class="setup">
+          <strong>One-time email setup</strong>
+          <ol>
+            <li>
+              Open
+              <a href="https://web3forms.com" target="_blank" rel="noopener"
+                >web3forms.com</a
+              >
+              and create a free access key with your email.
+            </li>
+            <li>
+              Paste it into <code>js/config.js</code> as
+              <code>web3formsAccessKey</code>.
+            </li>
+            <li>
+              When she finishes (Yes, score, or key reveal), you get an email
+              immediately with every answer.
+            </li>
+          </ol>
+        </div>
+
+        <div id="key-status" class="status-pill warn">Checking email config…</div>
+
+        <div id="gate">
+          <div class="pin-row">
+            <input
+              type="password"
+              id="pin-input"
+              placeholder="Host PIN"
+              autocomplete="off"
+            />
+            <button type="button" class="btn btn-romance" id="btn-unlock" style="width:auto;max-width:none;padding:12px 18px">
+              Unlock
+            </button>
+          </div>
+          <p class="empty" id="pin-error" hidden>Wrong PIN.</p>
+        </div>
+
+        <div id="viewer" hidden>
+          <div class="toolbar">
+            <button type="button" class="btn btn-ghost" id="btn-refresh" style="width:auto;max-width:none;border-radius:999px;padding:10px 16px">
+              Refresh
+            </button>
+            <button type="button" class="btn btn-ghost" id="btn-export" style="width:auto;max-width:none;border-radius:999px;padding:10px 16px">
+              Export JSON
+            </button>
+            <button type="button" class="btn btn-ghost" id="btn-clear" style="width:auto;max-width:none;border-radius:999px;padding:10px 16px">
+              Clear local
+            </button>
+          </div>
+          <div id="list"></div>
+        </div>
+      </div>
+    </div>
+
+    <script src="js/config.js"></script>
+    <script src="js/responses.js"></script>
+    <script>
+      (function () {
+        const cfg = window.BB_CONFIG || {};
+        const status = document.getElementById("key-status");
+        const key = (cfg.web3formsAccessKey || "").trim();
+        if (key && key !== "YOUR_WEB3FORMS_ACCESS_KEY") {
+          status.textContent = "Email alerts configured";
+          status.classList.remove("warn");
+          status.classList.add("ok");
+        } else {
+          status.textContent = "Email not configured — edit js/config.js";
+        }
+
+        const gate = document.getElementById("gate");
+        const viewer = document.getElementById("viewer");
+        const pinInput = document.getElementById("pin-input");
+        const pinError = document.getElementById("pin-error");
+        const list = document.getElementById("list");
+
+        function unlock() {
+          const expected = cfg.hostPin || "BBforever";
+          if (pinInput.value !== expected) {
+            pinError.hidden = false;
+            return;
+          }
+          pinError.hidden = true;
+          gate.hidden = true;
+          viewer.hidden = false;
+          render();
+        }
+
+        function render() {
+          const items = window.BB_RESPONSES.loadSubmissions();
+          if (!items.length) {
+            list.innerHTML =
+              '<p class="empty">No responses saved on this device yet. They still arrive by email when configured.</p>';
+            return;
+          }
+
+          list.innerHTML = items
+            .map((s) => {
+              const score =
+                typeof s.score === "number"
+                  ? `${s.score} / ${s.total}${s.passed ? " · passed" : ""}`
+                  : "";
+              const noClicks =
+                typeof s.noClickCount === "number"
+                  ? `NO clicks: ${s.noClickCount}`
+                  : "";
+              const choiceLabel =
+                s.event === "proposal_yes"
+                  ? "YES 💍"
+                  : s.event === "proposal_no_clicks"
+                    ? "NO 🙃"
+                    : escapeHtml(s.event);
+              const answers = (s.answers || [])
+                .map(
+                  (a) => `
+                <div class="answer-line">
+                  <strong>${a.number}.</strong> ${escapeHtml(shortPrompt(a.prompt))}<br/>
+                  First: ${escapeHtml(a.firstAnswer)}. ${escapeHtml(a.firstLabel)}
+                  <span class="${a.firstCorrect ? "ok-mark" : "bad-mark"}">${
+                    a.firstCorrect ? "✓" : "✗"
+                  }</span><br/>
+                  Final: ${escapeHtml(a.finalAnswer)}. ${escapeHtml(a.finalLabel)}
+                  <span class="${a.finalCorrect ? "ok-mark" : "bad-mark"}">${
+                    a.finalCorrect ? "✓" : "✗"
+                  }</span>
+                </div>`
+                )
+                .join("");
+
+              return `
+              <article class="submission">
+                <h2>${choiceLabel}</h2>
+                <div class="meta">${escapeHtml(s.localTime || s.timestamp)}${
+                  score ? " · " + score : ""
+                }${noClicks ? " · " + noClicks : ""}${
+                  s.message ? "<br/>" + escapeHtml(s.message) : ""
+                }</div>
+                ${
+                  answers
+                    ? `<details><summary>View answers</summary>${answers}</details>`
+                    : ""
+                }
+              </article>`;
+            })
+            .join("");
+        }
+
+        function shortPrompt(p) {
+          if (!p) return "";
+          return p.length > 90 ? p.slice(0, 90) + "…" : p;
+        }
+
+        function escapeHtml(str) {
+          return String(str || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;");
+        }
+
+        document.getElementById("btn-unlock").addEventListener("click", unlock);
+        pinInput.addEventListener("keydown", (e) => {
+          if (e.key === "Enter") unlock();
+        });
+        document.getElementById("btn-refresh").addEventListener("click", render);
+        document.getElementById("btn-export").addEventListener("click", () => {
+          const blob = new Blob(
+            [JSON.stringify(window.BB_RESPONSES.loadSubmissions(), null, 2)],
+            { type: "application/json" }
+          );
+          const a = document.createElement("a");
+          a.href = URL.createObjectURL(blob);
+          a.download = `bbforever-responses-${Date.now()}.json`;
+          a.click();
+        });
+        document.getElementById("btn-clear").addEventListener("click", () => {
+          if (confirm("Clear locally saved responses on this device?")) {
+            localStorage.removeItem(window.BB_RESPONSES.LOCAL_KEY);
+            render();
+          }
+        });
+      })();
+    </script>
+  </body>
+</html>
