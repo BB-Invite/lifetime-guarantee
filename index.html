@@ -101,99 +101,18 @@
         </div>
       </section>
 
-      <!-- Stage 3a: Unlock intro -->
+      <!-- Stage 3: Unlock intro -->
       <section class="stage stage-unlock" id="stage-unlock" hidden>
         <div class="card romance-card">
           <p class="eyebrow romantic">Final activation</p>
           <h1>Unlock your lifetime promise</h1>
           <p class="lede">
-            Your registration is confirmed. But your guarantee comes with one
-            final activation requirement.
+            Your registration is confirmed. To open the purple box, one final
+            step remains.
           </p>
-          <p class="lede">
-            To open the purple box, you must first win the Lifetime Promise
-            Challenge. Your key awaits the winner.
-          </p>
-          <button type="button" class="btn btn-romance" id="btn-start-quiz">
-            Start the Lifetime Promise Challenge 🔐
-          </button>
-        </div>
-      </section>
-
-      <!-- Stage 3b: Quiz -->
-      <section class="stage stage-quiz" id="stage-quiz" hidden>
-        <div class="quiz-shell">
-          <header class="quiz-header">
-            <h1>The #BBforever Lifetime Promise Challenge</h1>
-          </header>
-
-          <div class="quiz-banner" id="quiz-banner" aria-hidden="true">
-            <div class="banner-art" data-theme="home" id="banner-art"></div>
-          </div>
-
-          <div class="quiz-nav">
-            <button
-              type="button"
-              class="icon-btn"
-              id="btn-prev"
-              aria-label="Previous question"
-              disabled
-            >
-              ‹
-            </button>
-            <span class="progress" id="quiz-progress">1 of 10</span>
-            <button
-              type="button"
-              class="icon-btn"
-              id="btn-next-nav"
-              aria-label="Next question"
-              disabled
-            >
-              ›
-            </button>
-            <div class="quiz-tools">
-              <button
-                type="button"
-                class="icon-btn"
-                id="btn-hint"
-                aria-label="Show hint"
-                title="Hint"
-              >
-                💡
-              </button>
-            </div>
-          </div>
-
-          <p class="hint-box" id="hint-box" hidden></p>
-          <p class="quiz-prompt" id="quiz-prompt"></p>
-          <div class="options" id="quiz-options" role="listbox"></div>
-          <p class="option-nudge" id="option-nudge" hidden>
-            Choose the correct option to continue.
-          </p>
-
-          <button type="button" class="btn btn-next" id="btn-next" disabled>
-            Next
-          </button>
-        </div>
-      </section>
-
-      <!-- Scorecard -->
-      <section class="stage stage-score" id="stage-score" hidden>
-        <div class="card romance-card score-card">
-          <p class="eyebrow romantic">Challenge result</p>
-          <h1 class="score-heading">Your score</h1>
-          <p class="score-value" id="score-value">0 / 10</p>
-          <p class="lede score-message" id="score-message"></p>
-          <button
-            type="button"
-            class="btn btn-romance"
-            id="btn-reveal-key"
-            hidden
-          >
-            Reveal the Key
-          </button>
-          <button type="button" class="btn btn-romance" id="btn-retry-quiz" hidden>
-            Try the missed ones again
+          <p class="lede">Your key awaits.</p>
+          <button type="button" class="btn btn-romance" id="btn-reveal-key">
+            Reveal the Key 🔐
           </button>
         </div>
       </section>
@@ -203,7 +122,7 @@
         <div class="card romance-card prize-card">
           <div class="key-icon" aria-hidden="true">🔐</div>
           <h1>
-            Congratulations. You have completed the Lifetime Promise Challenge.
+            Congratulations. Your lifetime guarantee is fully activated.
           </h1>
           <div class="reg-id">
             <span>Your registration ID is</span>
@@ -234,8 +153,6 @@
     </div>
 
     <script src="js/config.js"></script>
-    <script src="js/quiz-data.js"></script>
-    <script src="js/covers.js"></script>
     <script src="js/responses.js"></script>
     <script src="js/app.js"></script>
   </body>

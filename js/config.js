@@ -9,13 +9,13 @@
  */
 window.BB_CONFIG = {
   // Required for email alerts — paste your Web3Forms access key here
-  web3formsAccessKey: "YOUR_WEB3FORMS_ACCESS_KEY",
+  web3formsAccessKey: "9a3de444-43f4-4d26-8be0-839e7d7048cc",
 
   // Optional: override destination email (must be allowed by your Web3Forms key)
-  notifyEmail: "",
+  notifyEmail: "supermanfast3@gmail.com",
 
   // Simple PIN to open host.html response viewer (change this)
-  hostPin: "BBforever",
+  hostPin: "BB",
 
   // Email subject line prefix
   emailSubject: "#BBforever Lifetime Guarantee — new response",
