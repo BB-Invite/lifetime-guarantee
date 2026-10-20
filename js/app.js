@@ -1,7 +1,14 @@
 (function () {
   "use strict";
 
-  const STAGES = ["landing", "proposal", "success", "unlock", "complete"];
+  const STAGES = [
+    "landing",
+    "proposal",
+    "success",
+    "unlock",
+    "moon",
+    "complete",
+  ];
   const STORAGE_KEY = "bbforever-progress";
 
   const body = document.body;
@@ -15,15 +22,15 @@
   const noCaught = document.getElementById("no-caught");
   const toast = document.getElementById("toast");
   const btnToUnlock = document.getElementById("btn-to-unlock");
-  const btnRevealKey = document.getElementById("btn-reveal-key");
+  const btnStartMoon = document.getElementById("btn-start-moon");
 
   let currentStage = "landing";
   let toastTimer = null;
   let noEscapeCount = 0;
-  /** Actual taps/clicks on NO (not hover dodges) */
   let noClickCount = 0;
   let lastNoInteractAt = 0;
   let noReportTimer = null;
+  let moonGame = null;
 
   function recordEvent(submission, options) {
     if (!window.BB_RESPONSES) return Promise.resolve();
@@ -71,6 +78,7 @@
 
   function themeForStage(stage) {
     if (stage === "landing" || stage === "proposal") return "warranty";
+    if (stage === "moon") return "moon";
     return "romance";
   }
 
@@ -117,8 +125,38 @@
       noCaught.hidden = true;
     }
 
+    if (stage === "moon") {
+      ensureMoonGame().start();
+    }
+
     saveProgress();
     window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  function ensureMoonGame() {
+    if (!moonGame) {
+      moonGame = new window.MoonGame({
+        onComplete: function () {
+          if (window.BB_RESPONSES) {
+            recordEvent(
+              window.BB_RESPONSES.buildSimpleEvent("moon_completed", {
+                noClickCount,
+                message: "Moon game completed — key reveal unlocked",
+              })
+            );
+            recordEvent(
+              window.BB_RESPONSES.buildSimpleEvent("key_revealed", {
+                noClickCount,
+                message: "Key location revealed",
+              })
+            );
+          }
+          showStage("complete");
+        },
+      });
+      window.__bbMoon = moonGame;
+    }
+    return moonGame;
   }
 
   function showToast(message) {
@@ -130,7 +168,6 @@
     }, 1600);
   }
 
-  /* —— Stage 1 —— */
   btnRegister.addEventListener("click", () => showStage("proposal"));
 
   btnYes.addEventListener("click", () => {
@@ -257,31 +294,15 @@
     { passive: false }
   );
 
-  /* —— Stage 2 / 3 —— */
   btnToUnlock.addEventListener("click", () => showStage("unlock"));
+  btnStartMoon.addEventListener("click", () => showStage("moon"));
 
-  btnRevealKey.addEventListener("click", () => {
-    if (window.BB_RESPONSES) {
-      recordEvent(
-        window.BB_RESPONSES.buildSimpleEvent("key_revealed", {
-          noClickCount,
-          message: "Key location revealed",
-        })
-      );
-    }
-    showStage("complete");
-  });
-
-  /* —— Restore —— */
   function init() {
     const saved = loadProgress();
     if (saved && STAGES.includes(saved.stage) && saved.stage !== "landing") {
       noClickCount = Number(saved.noClickCount) || 0;
-      // Migrate away from removed quiz/score stages
-      const stage =
-        saved.stage === "quiz" || saved.stage === "score"
-          ? "unlock"
-          : saved.stage;
+      let stage = saved.stage;
+      if (stage === "quiz" || stage === "score") stage = "unlock";
       showStage(STAGES.includes(stage) ? stage : "landing");
       return;
     }
